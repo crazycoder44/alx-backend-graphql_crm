@@ -59,3 +59,4 @@ qs.delete()
 with open('/tmp/customer_cleanup_log.txt','a') as f:
     f.write(f"{timezone.now().isoformat()} - Deleted {count} inactive customers\n")
 PY
+# print
