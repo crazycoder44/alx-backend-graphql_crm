@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # third-party
     'graphene_django',
+    'django_crontab',
 
     # local apps
     'crm',
@@ -50,6 +51,10 @@ INSTALLED_APPS = [
 GRAPHENE = {
     'SCHEMA': 'alx_backend_graphql_crm.schema.schema'  # path to the schema object
 }
+
+CRONJOBS = [
+    ('*/5 * * * *', 'crm.cron.log_crm_heartbeat'),
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
