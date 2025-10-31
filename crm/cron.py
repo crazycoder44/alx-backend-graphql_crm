@@ -37,3 +37,43 @@ def log_crm_heartbeat():
         except Exception:
             # last resort: ignore
             pass
+
+
+def update_low_stock():
+    """
+    Executes the UpdateLowStockProducts GraphQL mutation every 12 hours.
+    Logs updated product names and new stock levels to /tmp/low_stock_updates_log.txt
+    """
+    ts = datetime.now().strftime("%d/%m/%Y-%H:%M:%S")
+
+    transport = RequestsHTTPTransport(
+        url="http://localhost:8000/graphql/",
+        verify=True,
+        retries=3,
+    )
+    client = Client(transport=transport, fetch_schema_from_transport=False)
+
+    mutation = gql("""
+        mutation {
+            updateLowStockProducts {
+                success
+                updatedProducts {
+                    name
+                    stock
+                }
+            }
+        }
+    """)
+
+    try:
+        result = client.execute(mutation)
+        updates = result.get("updateLowStockProducts", {}).get("updatedProducts", [])
+
+        with open("/tmp/low_stock_updates_log.txt", "a") as f:
+            f.write(f"\n{ts} - Low stock update:\n")
+            for p in updates:
+                f.write(f"{p['name']} -> new stock: {p['stock']}\n")
+
+    except Exception as e:
+        with open("/tmp/low_stock_updates_log.txt", "a") as f:
+            f.write(f"{ts} - Error: {e}\n")
