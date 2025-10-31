@@ -2,6 +2,8 @@ import datetime
 from celery import shared_task
 from django.utils import timezone
 from graphene_django.utils.testing import graphql_query
+from datetime import datetime
+import requests
 
 from crm.schema import schema  # your GraphQL schema
 

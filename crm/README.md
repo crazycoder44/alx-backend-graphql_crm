@@ -1,13 +1,10 @@
-# CRM Celery Report Task
+# CRM Celery Setup Guide
 
-## Objective
-Generate a weekly CRM report every Monday at 6 AM using Celery and Celery Beat.
+## 1. Install Dependencies
 
----
+Make sure Redis and all Python packages are installed:
 
-## 🧰 Setup Instructions
-
-### 1. Install Redis and dependencies
 ```bash
-sudo apt install redis-server
-pip install -r requirements.txt
+sudo apt update
+sudo apt install redis-server -y
+pip install celery django-celery-beat redis gql requests
