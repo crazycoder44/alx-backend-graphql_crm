@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 import re
 from decimal import Decimal
+from crm.models import Product
 
 # ========== TYPES ==========
 
